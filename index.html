@@ -1,0 +1,206 @@
+<!-- SERVER SIDE FORM VALIDATION USING PHP  -->
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- link css file -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h3 class="text-center my-4 text-white">FORM VALIDATION </h3>
+    <div class="container border">
+        <div class=" userValForm col-lg-8m-auto d-block ">
+            <div class="row">
+                <div class="col-md-6">
+                  <img src="images\asset 1.webp" alt=""class="img-fluid"></div>
+                <div class="col-md-6 my-3">
+                    <form id="form" action=" " method="post">
+                        <!-- formProcess.php -->
+                        <div class="form-group">
+                            <label for="user" class="h5 text-white">Username:</label>
+                            <input type="text" name="username" id="usernames" class="form-control">
+                            <h5 id="usercheck" class="  invalid-feedback " style="color: red;"></h5>
+                           
+                        </div>
+
+                        <div class="form-group">
+                            <label for="user" class="h5 text-white"> Email:</label>
+                            <input type="email" name="email" id="email" class="form-control">
+                            <h5 id="emailvalid" class=" invalid-feedback" style="color: red;"></h5>
+                            
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="h5 text-white">Password:</label>
+                            <input type="password" name="pass" id="password" class="form-control">
+                            <h5 id="passcheck" class=" invalid-feedback " style="color: red;"></h5>
+                            
+                        </div>
+
+                        <input type="submit" id="submitbtn" value="Submit" class="btn btn-primary" name="submit">
+                    </form>
+                </div>               
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let usernameError = true;
+            let emailError = true;
+            let passwordError = true;
+
+            // Validate Username
+            $(document).ready(function () {
+                $("#usercheck").hide();
+                $("#usernames").keyup(function () {
+                    validateUsername();
+                });
+            });
+
+            function validateUsername() {
+                let usernameValue = $("#usernames").val().trim();
+
+                if (usernameValue.length === 0) {
+                    $("#usercheck").show();
+                    $("#usercheck").html("** Username is required.");
+                    usernameError = false;
+                } else if (usernameValue.length < 3 || usernameValue.length > 10) {
+                    $("#usercheck").show();
+                    $("#usercheck").html("** Username must be between 3 and 10 characters.");
+                    usernameError = false;
+                } else {
+                    $("#usercheck").hide();
+                    usernameError = true;
+                }
+            }
+
+            // Validate Email
+            $("#email").blur(function () {
+                validateEmail();
+            });
+
+            function validateEmail() {
+                const email = document.getElementById("email");
+                let regex = /^[\w\.-]+@[\w\.-]+\.\w{2,7}$/;
+                let s = email.value;
+                if (regex.test(s)) {
+                    email.classList.remove("is-invalid");
+                    emailError = true;
+                    $("#emailvalid").html("");
+                } else {
+                    email.classList.add("is-invalid");
+                    emailError = false;
+                    $("#emailvalid").html("** Please enter a valid email address.");
+                }
+            }
+
+            // Validate Password
+            $("#passcheck").hide();
+            $("#password").keyup(function () {
+                validatePassword();
+            });
+
+            function validatePassword() {
+                let passwordValue = $("#password").val().trim();
+                if (passwordValue.length == 0) {
+                    $("#passcheck").show();
+                    $("#passcheck").html("** Password is required.");
+                    passwordError = false;
+                } else if (passwordValue.length < 3 || passwordValue.length > 10) {
+                    $("#passcheck").show();
+                    $("#passcheck").html("** Password must be between 3 and 10 characters.");
+                    passwordError = false;
+                } else {
+                    $("#passcheck").hide();
+                    passwordError = true;
+                }
+            }
+
+
+            // Submit button
+            $("#submitbtn").click(function (e) {
+                // e.preventDefault();
+                validateUsername();
+                validatePassword();
+                validateEmail();
+                if (usernameError && passwordError && emailError) {
+                  return true
+                } else {
+
+                    return false;
+                }
+            });
+        });
+
+    </script>
+
+    <!-- jQurey Form Validation  -->
+
+
+    <!-- <script>
+   $(document).ready(function() {
+    $('#form').validate({
+      rules: {
+        username: {
+          required: true,
+          minlength: 3,
+          maxlength: 8,
+        },
+        email: {
+          required: true,
+          email: true,
+        },
+        pass: {
+          required: true,
+          minlength: 3,
+          maxlength: 8,
+        },
+      },
+      messages: {
+        username: {
+          required: "Please enter your name",
+          minlength: "Username must be at least 3 characters long",
+          maxlength: "Username must be no more than 8 characters.",
+        },
+        email: {
+          required: "Please enter your email",
+          email: "Please enter a valid email",
+        },
+        pass: {
+          required: "Please enter your password",
+          minlength: "Password must be at least 3 characters long",
+          maxlength: "Password must be no more than 8 characters.",
+        },
+      },
+      submitHandler: function(form) {
+        form.submit();
+      }
+    });
+   });
+</script> -->
+
+
+
+</body>
+
+</html>
